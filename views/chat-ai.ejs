@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Assistant</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+</head>
+<body class="bg-light">
+
+  <%- include('partials/navbar') %>
+
+  <div class="container my-5">
+    <div class="card shadow p-4 mx-auto" style="max-width: 700px;">
+      <h2 class="text-center mb-4">🤖 Smart Queue Assistant</h2>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Ask your question</label>
+        <input
+          type="text"
+          id="questionInput"
+          class="form-control"
+          placeholder="Example: What is clinic timing?"
+        >
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Token Number (only if needed)</label>
+        <input
+          type="number"
+          id="tokenInput"
+          class="form-control"
+          placeholder="Example: 3"
+        >
+      </div>
+
+      <div class="d-flex gap-2 mb-4">
+        <button id="askBtn" class="btn btn-success" type="button">Ask</button>
+        <button id="clearBtn" class="btn btn-secondary" type="button">Clear</button>
+      </div>
+
+      <div class="mb-3">
+        <p class="fw-semibold mb-2">Quick Questions</p>
+        <div class="d-flex flex-wrap gap-2">
+          <button class="btn btn-outline-success btn-sm quick-btn" type="button">What is my token?</button>
+          <button class="btn btn-outline-success btn-sm quick-btn" type="button">How much time left?</button>
+          <button class="btn btn-outline-success btn-sm quick-btn" type="button">How many patients are ahead?</button>
+          <button class="btn btn-outline-success btn-sm quick-btn" type="button">What is clinic timing?</button>
+          <button class="btn btn-outline-success btn-sm quick-btn" type="button">I am nervous</button>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Answer</label>
+        <div
+          id="answerBox"
+          class="border rounded p-3 bg-white"
+          style="min-height: 120px;"
+        >
+          Ask something and answer will appear here.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const questionInput = document.getElementById("questionInput");
+    const tokenInput = document.getElementById("tokenInput");
+    const askBtn = document.getElementById("askBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const answerBox = document.getElementById("answerBox");
+    const quickBtns = document.querySelectorAll(".quick-btn");
+
+    async function askAI(customQuestion = null) {
+      const message = customQuestion || questionInput.value.trim();
+      const tokenNumber = tokenInput.value.trim();
+
+      if (!message) {
+        answerBox.innerText = "⚠️ Please enter a question.";
+        return;
+      }
+
+      answerBox.innerText = "Assistant is thinking...";
+
+      try {
+        const res = await fetch("/test-ai", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message: message,
+            tokenNumber: tokenNumber
+          })
+        });
+
+        const data = await res.json();
+
+        if (data.reply) {
+          answerBox.innerText = data.reply;
+        } else if (data.error) {
+          answerBox.innerText = "⚠️ " + data.error;
+        } else {
+          answerBox.innerText = "Something went wrong.";
+        }
+
+      } catch (err) {
+        console.error("Frontend fetch error:", err);
+        answerBox.innerText = "⚠️ Server error. Please try again.";
+      }
+    }
+
+    askBtn.onclick = function () {
+      askAI();
+    };
+
+    clearBtn.onclick = function () {
+      questionInput.value = "";
+      tokenInput.value = "";
+      answerBox.innerText = "Ask something and answer will appear here.";
+      questionInput.focus();
+    };
+
+    questionInput.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        askAI();
+      }
+    });
+
+    quickBtns.forEach((btn) => {
+      btn.onclick = function () {
+        questionInput.value = btn.innerText;
+        askAI(btn.innerText);
+      };
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Clinic Queue Management</title>
+
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+  <!-- NAVBAR -->
+  <%- include('partials/navbar') %>
+ 
+
+
+  <!-- HERO SECTION -->
+  <div class="bg-success text-white py-5">
+    <div class="container text-center">
+      <h1 class="fw-bold mb-2">
+        🏥 Clinic Queue Management System
+      </h1>
+      <p class="fs-5 opacity-75">
+        Reduce waiting confusion · Track queue status · Improve patient experience
+      </p>
+    </div>
+  </div>
+
+  <!-- LIVE QUEUE STATS -->
+  <div class="container my-5">
+    <div class="row g-4 text-center">
+
+      <div class="col-md-4">
+        <div class="card shadow border-0 h-100">
+          <div class="card-body">
+            <div class="fs-1">🩺</div>
+            <p class="text-muted mb-1">Now Serving</p>
+            <h1 class="fw-bold text-primary">
+              <%= nowServingToken %>
+            </h1>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card shadow border-0 h-100">
+          <div class="card-body">
+            <div class="fs-1">👥</div>
+            <p class="text-muted mb-1">Patients Waiting</p>
+            <h1 class="fw-bold text-success">
+              <%= waitingCount %>
+            </h1>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card shadow border-0 h-100">
+          <div class="card-body">
+            <div class="fs-1">⏱️</div>
+            <p class="text-muted mb-1">Avg. Consultation Time</p>
+            <h1 class="fw-bold text-secondary">
+              <%= avgTime %> <small class="fs-5">min</small>
+            </h1>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ROLE ACTIONS -->
+  <div class="container mb-5">
+    <div class="row g-4">
+
+      <!-- ADMIN CARD -->
+      <div class="col-md-6">
+        <div class="card shadow-sm border-0 h-100">
+          <div class="card-body text-center">
+            <div class="fs-1">🧑‍⚕️</div>
+            <h4 class="fw-semibold mt-2">Admin / Reception</h4>
+            <p class="text-muted">
+              Add patients, manage the queue flow, and send patients to the doctor
+              efficiently.
+            </p>
+            <a href="/admin" class="btn btn-primary btn-lg w-100">
+              Go to Admin Dashboard
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- PATIENT CARD -->
+      <div class="col-md-6">
+        <div class="card shadow-sm border-0 h-100">
+          <div class="card-body text-center">
+            <div class="fs-1">🧍</div>
+            <h4 class="fw-semibold mt-2">Patient</h4>
+            <p class="text-muted">
+              Check your status, see how many patients are ahead,
+              and estimate your waiting time.
+            </p>
+            <a href="/patient" class="btn btn-success btn-lg w-100">
+              Check Queue Status
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+      <!-- AI ASSISTANT -->
+      <div class="col-12 d-flex justify-content-center">
+        <a href="/chat" class="btn btn-info btn-lg">
+              AI Assistant 🙋
+        </a>
+      </div>
+
+  <!-- FOOTER -->
+<footer class="bg-light border-top mt-5">
+  <div class="container py-4">
+
+    <!-- TOP ROW -->
+    <div class="row align-items-center mb-3">
+
+      <!-- BRAND -->
+      <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
+        <h5 class="fw-bold mb-1">🏥 Clinic Queue System</h5>
+        <p class="text-muted mb-0">
+          Making waiting simple, transparent, and stress-free.
+        </p>
+      </div>
+
+      <!-- LINKS -->
+      <div class="col-md-6 text-center text-md-end">
+        <a href="/" class="text-decoration-none text-muted me-3">Home</a>
+        <a href="/admin" class="text-decoration-none text-muted me-3">Admin</a>
+        <a href="/patient" class="text-decoration-none text-muted">Patient</a>
+      </div>
+
+    </div>
+
+    <hr class="my-3">
+
+    <!-- BOTTOM ROW -->
+    <div class="text-center">
+
+      <p class="fst-italic text-muted mb-1">
+        “Good systems don’t rush people — they guide them calmly.”
+      </p>
+
+      <p class="text-muted mb-0">
+        Built with care by <strong>Satveek Prakash</strong>
+      </p>
+
+      <small class="text-muted">
+        © <%= new Date().getFullYear() %> · Academic Project
+      </small>
+
+    </div>
+
+  </div>
+</footer>
+<!--reload-->
+   <script src="/socket.io/socket.io.js"></script>
+
+<script>
+  const socket = io();
+
+  socket.on("queueUpdated", () => {
+    location.reload();
+  });
+</script>
+
+
+  <!-- Bootstrap JS -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Dashboard</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<%- include('partials/navbar') %>
+
+
+
+<!-- HEADER -->
+<div class="bg-success text-white py-4">
+  <div class="container">
+    <h2 class="fw-bold mb-1">Admin Dashboard</h2>
+    <p class="mb-0 opacity-75">
+      Manage patient queue efficiently
+    </p>
+  </div>
+</div>
+
+<div class="container my-4">
+
+  <!-- TOP STATUS CARDS -->
+  <div class="row g-4 text-center mb-4">
+
+    <div class="col-md-4">
+      <div class="card shadow border-0 h-100">
+        <div class="card-body">
+          <div class="fs-1">🩺</div>
+          <p class="text-muted mb-1">Now Serving</p>
+          <h1 class="fw-bold text-primary">
+            <%= nowServingToken !== null ? nowServingToken : "No one in queue" %>
+          </h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow border-0 h-100">
+        <div class="card-body">
+          <div class="fs-1">👥</div>
+          <p class="text-muted mb-1">Patients Waiting</p>
+          <h1 class="fw-bold text-success">
+            <%= waitingCount %>
+          </h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow border-0 h-100">
+        <div class="card-body">
+          <div class="fs-1">⏱️</div>
+          <p class="text-muted mb-1">Avg. Time</p>
+          <h1 class="fw-bold text-secondary">
+            15 <small class="fs-5">min</small>
+          </h1>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ADD PATIENT SECTION -->
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-white fw-semibold">
+      ➕ Add New Patient
+    </div>
+    <div class="card-body">
+      <form action="/add-patient" method="POST" class="needs-validation" novalidate>
+        <div class="row g-2">
+          <div class="col-md-4">
+            <input class="form-control" name="mrdNo" placeholder="MRD Number" required>
+            
+          </div>
+          <div class="col-md-6">
+            <input class="form-control" name="patientName" placeholder="Patient Name" required>
+          </div>
+          <div class="col-md-2 d-grid">
+            <button class="btn btn-primary">
+              Add
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- QUEUE CONTROL -->
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-header bg-white fw-semibold">
+      🎯 Queue Control
+    </div>
+    <div class="card-body">
+      <form action="/serve-next" method="POST">
+        <button class="btn btn-warning btn-lg w-100">
+          ▶️ Send Next Patient to Doctor
+        </button>
+      </form>
+      <p class="text-muted text-center mt-2 mb-0">
+        This will mark the current patient as completed
+      </p>
+    </div>
+  </div>
+
+  <!--REST BUTTOM-->
+  <form
+  action="/admin/reset-queue"
+  method="POST"
+  onsubmit="return confirm('Are you sure you want to reset the entire queue?');"
+>
+  <button class="btn btn-danger mt-3 w-100">
+    Reset Queue
+  </button>
+</form>
+
+
+  <!-- UPCOMING TOKENS -->
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-white fw-semibold">
+      🔜 Upcoming Tokens
+    </div>
+    <div class="card-body">
+      <% if (nextTokens.length === 0) { %>
+        <p class="text-muted">No patients waiting</p>
+      <% } else { %>
+        <% nextTokens.forEach(p => { %>
+          <span class="badge bg-secondary fs-6 me-1 mb-1">
+            Token <%= p.tokenNumber %>
+          </span>
+        <% }) %>
+      <% } %>
+    </div>
+  </div>
+
+</div>
+<!--reload-->
+   <script src="/socket.io/socket.io.js"></script>
+
+<script>
+  const socket = io();
+
+  socket.on("queueUpdated", () => {
+    location.reload();
+  });
+</script>
+
+
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+</script>
+</body>
+</html>

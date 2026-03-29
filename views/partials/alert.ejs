@@ -1,0 +1,13 @@
+<% if (alert) { %>
+<div class="alert alert-<%= alert.type %> alert-dismissible fade show mt-3" role="alert">
+  <%= alert.message %>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="close-alert"></button>
+</div>
+
+<script>
+  // Remove cookie when alert is closed
+  document.getElementById("close-alert").addEventListener("click", () => {
+    document.cookie = "alert=; Max-Age=0; path=/;";
+  });
+</script>
+<% } %>

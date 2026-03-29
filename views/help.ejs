@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Help | How It Works</title>
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<%- include('partials/navbar') %>
+
+<!-- HEADER -->
+<div class="bg-info text-white py-5">
+  <div class="container text-center">
+    <h2 class="fw-bold mb-2">How This System Works</h2>
+    <p class="opacity-75 mb-0">
+      Step-by-step guide for patients and staff
+    </p>
+  </div>
+</div>
+
+<div class="container my-5">
+
+  <!-- FOR PATIENTS -->
+  <div class="mb-5">
+    <h4 class="fw-semibold mb-3">🧍 For Patients</h4>
+
+    <ol class="list-group list-group-numbered">
+      <li class="list-group-item">
+        Receive a token number at the reception desk.
+      </li>
+      <li class="list-group-item">
+        Visit the Patient Queue Status page.
+      </li>
+      <li class="list-group-item">
+        Enter your token number and submit.
+      </li>
+      <li class="list-group-item">
+        View your queue position and estimated waiting time.
+      </li>
+      <li class="list-group-item">
+        Be ready when your token is called.
+      </li>
+    </ol>
+  </div>
+
+  <!-- FOR STAFF -->
+  <div>
+    <h4 class="fw-semibold mb-3">🩺 For Clinic Staff</h4>
+
+    <ol class="list-group list-group-numbered">
+      <li class="list-group-item">
+        Add patient details and generate a token.
+      </li>
+      <li class="list-group-item">
+        Serve patients one by one using the queue.
+      </li>
+      <li class="list-group-item">
+        Queue updates automatically as patients are completed.
+      </li>
+      <li class="list-group-item">
+        Reduced crowding and better workflow.
+      </li>
+    </ol>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

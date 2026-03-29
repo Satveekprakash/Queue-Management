@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Error</title>
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<%- include('partials/navbar') %>
+
+
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+
+  <div class="text-center">
+
+    <div class="display-1 mb-3">⚠️</div>
+
+    <h2 class="fw-bold mb-2">
+      <%= statusCode || 500 %> - Something went wrong
+    </h2>
+
+    <p class="text-muted mb-4">
+      <%= message || "The page you are looking for does not exist or an error occurred." %>
+    </p>
+
+    <div class="d-flex justify-content-center gap-3">
+      <a href="/home" class="btn btn-primary">
+        Go to Home
+      </a>
+      <a href="/patient" class="btn btn-outline-secondary">
+        Check Queue Status
+      </a>
+    </div>
+
+    <p class="text-muted fst-italic mt-4">
+      Please contact reception if the issue persists.
+    </p>
+
+  </div>
+
+</div>
+
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+</script>
+
+</body>
+</html>
