@@ -76,7 +76,13 @@ const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH;
  const http = require("http");
  const server = http.createServer(app);
  const { Server } = require("socket.io");
- const io = new Server(server);
+ const io = new Server(server,{//this is used for deployment
+  cors:{
+    origin: process.env.CLIENT_URL || "*",
+    methods: ["GET", "POST"],
+    credentials: true,
+  }
+ });
  app.set("io", io);
  server.listen(port, () => {
   console.log("[SERVER] Server running with Socket.io");
