@@ -1,0 +1,49 @@
+
+
+services:
+  node-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: token-node
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    depends_on:
+      - python-service
+      - redis
+      - mongo
+    restart: always
+
+  python-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    container_name: token-python
+    ports:
+      - "8000:8000"
+    env_file:
+      - src/.env
+    depends_on:
+      - redis
+    restart: always
+
+  redis:
+    image: redis:7-alpine
+    container_name: token-redis
+    ports:
+      - "6379:6379"
+    restart: always
+
+  mongo:
+    image: mongo:6
+    container_name: token-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: always
+
+volumes:
+  mongo_data:
