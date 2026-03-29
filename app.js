@@ -5,7 +5,10 @@ const dotenv=require("dotenv");
 dotenv.config();
 
 const cors=require("cors");
-app.use(cors());
+app.use(cors({//for deploy important inside value
+  origin: process.env.CLIENT_URL,
+  credentials: true
+}));
 
 const path=require('path');
 const port=process.env.PORT ||3000;
