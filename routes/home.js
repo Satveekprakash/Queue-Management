@@ -5,7 +5,9 @@ const ExpressError = require("../utils/ExpressError");
 const wrapAsync = require("../utils/wrapAsync");
 const redisClient = require("../config/redis");//redis so it come fast
 
-
+router.get("/", (req, res) => {
+  res.redirect("/home");
+});
 router.get("/home", wrapAsync(async (req, res) => {
     //redis use
      const cachedData = await redisClient.get("homeData");
